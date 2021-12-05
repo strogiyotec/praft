@@ -19,13 +19,11 @@ while True:
         # Receive the data in small chunks and retransmit it
         while True:
             data = connection.recv(16)
+            string_command = data.decode("utf-8")
             print(f"received {data}")
-            if data:
-                print(f"sending data back to the client")
-                connection.sendall(data)
-            else:
-                print(f"no more data from {client_address}")
-                break
+            parts = string_command.split(" ")
+            response = f" command {parts[0]} key {parts[1]} values {parts[2]}"
+            connection.sendall(response.encode("utf-8"))
 
     finally:
         # Clean up the connection
